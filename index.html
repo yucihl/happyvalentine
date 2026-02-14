@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Valentine 💛</title>
+<style>
+body {
+    margin: 0;
+    font-family: monospace;
+    background-color: #fff9d6; /* 初始淡黃色 */
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    transition: background-color 2s ease;
+}
+
+/* 小皮卡丘 */
+.pikachu {
+    position: absolute;
+    width: 50px;
+    opacity: 1;
+    transition: opacity 2s ease;
+    z-index: 0;
+}
+
+/* 漂浮玫瑰動畫 */
+@keyframes floatRose {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(10deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* 背景漂浮玫瑰 */
+.rose-bg {
+    position: absolute;
+    font-size: 30px;
+    opacity: 0;
+    transition: opacity 2s ease;
+    animation: floatRose 6s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+/* 對話框 */
+.pokemon-box {
+    background: white;
+    border: 4px solid #333;
+    border-radius: 12px;
+    padding: 30px;
+    width: 340px;
+    position: relative;
+    box-shadow: 4px 4px 0px #aaa;
+    z-index: 1;
+}
+
+/* 對話框四角玫瑰 */
+.rose {
+    position: absolute;
+    font-size: 22px;
+}
+.rose.top-left { top: -12px; left: -12px; }
+.rose.top-right { top: -12px; right: -12px; }
+.rose.bottom-left { bottom: -12px; left: -12px; }
+.rose.bottom-right { bottom: -12px; right: -12px; }
+
+button {
+    padding: 8px 20px;
+    margin: 12px;
+    border: 2px solid #333;
+    background: #ffcc00;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #ffdd33;
+}
+
+.no {
+    position: absolute;
+    background: #ddd;
+}
+
+.screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.envelope {
+    font-size: 80px;
+    cursor: pointer;
+}
+
+/* love screen 文字初始隱藏 */
+#loveMessage {
+    opacity: 0;
+    transition: opacity 2s ease;
+    z-index: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- 7隻小皮卡丘 -->
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:8%; left:10%;">
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:20%; left:70%;">
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:50%; left:5%;">
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:65%; left:80%;">
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:35%; left:40%;">
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:75%; left:30%;">
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pikachu" style="top:10%; left:85%;">
+
+<!-- 第一畫面 -->
+<div class="screen" id="startScreen">
+    <div class="envelope" onclick="openLetter()">✉️</div>
+    <p>Open the letter 💛</p>
+</div>
+
+<!-- 問題畫面 -->
+<div class="screen" id="questionScreen" style="display:none;">
+    <div class="pokemon-box">
+        <div class="rose top-left">🌹</div>
+        <div class="rose top-right">🌹</div>
+        <div class="rose bottom-left">🌹</div>
+        <div class="rose bottom-right">🌹</div>
+        <p>Would you be my Valentine?</p>
+        <button onclick="sayYes()">Yes</button>
+        <button class="no" id="noBtn">No</button>
+    </div>
+</div>
+
+<!-- 成功畫面 -->
+<div class="screen" id="loveScreen" style="display:none;">
+    <!-- 對話框四角玫瑰保留 -->
+    <div class="pokemon-box">
+        <div class="rose top-left">🌹</div>
+        <div class="rose top-right">🌹</div>
+        <div class="rose bottom-left">🌹</div>
+        <div class="rose bottom-right">🌹</div>
+        <div id="loveMessage">
+            <p>Yay! I love you forever 🤍</p>
+            <p>You are the best boyfriend!</p>
+            <p>我愛你</p>
+        </div>
+    </div>
+
+    <!-- 背景漂浮玫瑰 -->
+    <div class="rose-bg" style="top:15%; left:20%;">🌹</div>
+    <div class="rose-bg" style="top:60%; left:70%;">🌹</div>
+    <div class="rose-bg" style="top:40%; left:50%;">🌹</div>
+    <div class="rose-bg" style="top:75%; left:30%;">🌹</div>
+    <div class="rose-bg" style="top:10%; left:80%;">🌹</div>
+</div>
+
+<script>
+function openLetter(){
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("questionScreen").style.display = "block";
+}
+
+function sayYes(){
+    document.getElementById("questionScreen").style.display = "none";
+    const loveScreen = document.getElementById("loveScreen");
+    loveScreen.style.display = "block";
+
+    // 背景淡粉色
+    document.body.style.backgroundColor = "#ffeef5";
+
+    // 背景漂浮玫瑰淡入
+    const bgRoses = loveScreen.querySelectorAll('.rose-bg');
+    bgRoses.forEach((r, i) => {
+        setTimeout(() => r.style.opacity = 0.15, i*200);
+    });
+
+    // 將原本皮卡丘變成漂浮玫瑰
+    const pikachus = document.querySelectorAll('.pikachu');
+    pikachus.forEach(p => {
+        const rose = document.createElement('div');
+        rose.textContent = "🌹";
+        rose.style.position = 'absolute';
+        rose.style.left = p.style.left;
+        rose.style.top = p.style.top;
+        rose.style.fontSize = "40px";
+        rose.style.opacity = 0.15;
+        rose.style.transition = "opacity 2s ease";
+        rose.style.animation = "floatRose 6s ease-in-out infinite alternate";
+        rose.style.zIndex = -1;  // 不擋對話框
+        document.body.appendChild(rose);
+        p.style.opacity = 0;     // 原皮卡丘淡出
+    });
+
+    // 顯示文字延遲
+    setTimeout(() => {
+        document.getElementById('loveMessage').style.opacity = 1;
+    }, 2000);
+}
+
+// "No" 按鈕躲避
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", function() {
+    const x = Math.random() * 250;
+    const y = Math.random() * 150;
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+</script>
+
+</body>
+</html>
